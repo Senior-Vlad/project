@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Subscription Page</h2>
+  <form id="subscriptionForm">
+    <input type="email" placeholder="Email" required><br>
+    <input type="text" placeholder="City" required><br>
+    <select id="conditionType">
+      <option value="temperatureBelow">Temperature below</option>
+      <option value="temperatureAbove">Temperature above</option>
+      <option value="rain">Дощ</option>
+    </select>
+    <input type="number" placeholder="value" id="valueInput" required><br>
+    <button>Підписатися</button>
+  </form>
+  <script>
+    document.getElementById("subscriptionForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = e.target[0].value;
+      const city = e.target[1].value;
+      const conditionType = e.target[2].value;
+      const value = e.target[3].value;
+      
+      const response = await fetch("http://localhost:3000/subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          city: city,
+          condition: { type: conditionType, value: Number(value) }
+        })
+      });
+      
+      alert(response.ok ? "Subscribed!" : "Error: " + await response.text());
+    });
+  </script>
+</body>
+</html>

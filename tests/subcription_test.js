@@ -18,3 +18,13 @@ describe("Subscription API", () => {
     expect(res.statusCode).toEqual(201);
   });
 });
+it("should return the mistake about wrong email adress", async () => {
+    const res = await request(app)
+      .post("/subscriptions")
+      .send({
+        email: "invalid-email",
+        city: "Kyiv",
+        condition: { type: "temperatureBelow", value: 0 }
+      });
+    expect(res.statusCode).toEqual(400);
+  });
